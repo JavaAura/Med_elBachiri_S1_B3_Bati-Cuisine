@@ -1,10 +1,10 @@
-package view.main;
+package view.entry;
 
 import utils.Input;
 import view.routing.Router;
 import interfaces.View;
 
-public class Main extends View {
+public class Entry extends View {
     private Input input = new Input();
 
     public void display() {
