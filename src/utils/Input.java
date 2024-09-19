@@ -1,13 +1,19 @@
 package utils;
 
+
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 public class Input {
     private Scanner scan = new Scanner(System.in);
+    private Logger logger = LoggerFactory.getLogger(Input.class);
 
     public int getNum(String message) {
         while (true) {
@@ -15,7 +21,7 @@ public class Input {
                 System.out.println(message != "" ? (">>> " + message + ":") : ">>> Enter number: ");
                 return scan.nextInt();
             } catch (InputMismatchException e) {
-                System.out.println("[-] Please enter valid number.\n");
+                logger.error("[-] Please enter valid number.\n");
                 scan.nextLine();
             }
         }
@@ -24,7 +30,7 @@ public class Input {
         while (true) {
             System.out.println(message != "" ? (">>> " + message + ":") : ">>> Enter text:");
             String input = scan.nextLine();
-            if(input.replaceAll(" ", "").matches("[a-zA-Z]+")) return input; else System.out.println("[-] Inpute must contain only letters.");
+            if(input.replaceAll(" ", "").matches("[a-zA-Z]+")) return input; else logger.error("[-] Inpute must contain only letters.");
         }
     }
     public String getStr(String message, boolean includeNumbers){
@@ -32,7 +38,7 @@ public class Input {
         while (true) {
             System.out.println(message != "" ? (">>> " + message + ":") : ">>> Enter text:");
             String input = scan.nextLine();
-            if (input.replaceAll(" ", "").matches("[\\w&&[^_]]+")) return input; else System.out.println("[-] Inpute must contain only letters and numbers.\n");                     
+            if (input.replaceAll(" ", "").matches("[\\w&&[^_]]+")) return input; else logger.error("[-] Inpute must contain only letters and numbers.\n");
         }
     }
     public LocalDate getLocalDate(String message, boolean canBeAboveNow){
@@ -44,10 +50,9 @@ public class Input {
                 String input = scan.nextLine();
                 LocalDate inputDate = LocalDate.parse(input, form);
                 if (canBeAboveNow) return inputDate;
-                if (!canBeAboveNow && inputDate.isBefore(now)) return inputDate; else System.out.println("[-] Please enter a date that is before " + now + "\n");
+                if (!canBeAboveNow && inputDate.isBefore(now)) return inputDate; else logger.error("[-] Please enter a date that is before " + now + "\n");
             } catch (DateTimeParseException e){
-                // throw error("[-] Invalid date, please enter a date in this format (DD/MM/YYYY)\n");
-                System.out.println("[-] Invalid date, please enter a date in this format (DD/MM/YYYY)\n");
+                logger.error("[-] Invalid date, please enter a date in this format (DD/MM/YYYY)\n");
             }
         }
     }
@@ -57,7 +62,7 @@ public class Input {
             System.out.println(message != "" ? (">>> " + message + ":") : ">>> You want ? (y/n) : ");
             String input = scan.nextLine();
             if (input.toLowerCase().matches("y||n")) return input.equalsIgnoreCase("y");
-            else System.out.println("[-] Input must be either \"y/Y\" or \"n/N\"\n");
+            else logger.error("[-] Input must be either \"y/Y\" or \"n/N\"\n");
         }
     }
 
@@ -65,7 +70,7 @@ public class Input {
         while (true) {
             System.out.println(message != "" ? (">>> " + message + ":") : ">>> Enter phone number (+212700000000) : ");
             String input = scan.nextLine();
-            if (input.replaceAll("[\\s\\-]", "").matches("\\+[0-9]{10,14}")) return input.replaceAll("[\\s\\-]", ""); else System.out.println("[-] Input must be like +XXXXXXXXXX (10 to 14 numbers, note: can contain \" \" or \"-\").\n");
+            if (input.replaceAll("[\\s\\-]", "").matches("\\+[0-9]{10,14}")) return input.replaceAll("[\\s\\-]", ""); else logger.error("[-] Input must be like +XXXXXXXXXX (10 to 14 numbers, note: can contain \" \" or \"-\").\n");
         }
     }
 
