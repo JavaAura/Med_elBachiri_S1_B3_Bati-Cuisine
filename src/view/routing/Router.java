@@ -5,7 +5,6 @@ import java.util.HashMap;
 import interfaces.View;
 import view.recourses.client.Index;
 import view.recourses.client.Search;
-import view.main.Main;
 import view.recourses.project.Calculate;
 import view.recourses.project.Show;
 import view.recourses.quite.Quite;
@@ -58,7 +57,7 @@ public class Router {
 
     private static HashMap<String, View> routs = new HashMap<String, View>() {
         {
-            put("0/0/main", new Main());
+            put("0/0/main", new view.entry.Entry());
             put("1/0/client", new Index());
             put("1/1/client_create", new view.recourses.client.Create());
             put("1/2/client_search", new Search());
