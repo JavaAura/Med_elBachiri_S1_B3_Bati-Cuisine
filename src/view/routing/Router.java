@@ -18,7 +18,7 @@ import view.recourses.quite.Quite;
  * <p>
  * </blockquote>
  * <p>
- * - add View Class and give it a Name and ID, in Router constructor method.
+ * - add View Class Instance and give it a Name and ID, in Router constructor method.
  * <p>
  * - get view by Name or ID
  * <p>
