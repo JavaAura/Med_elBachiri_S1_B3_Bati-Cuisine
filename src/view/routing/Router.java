@@ -3,6 +3,7 @@ package view.routing;
 import java.util.HashMap;
 
 import interfaces.View;
+import view.entry.Entry;
 import view.recourses.client.Index;
 import view.recourses.client.Search;
 import view.recourses.project.Calculate;
@@ -54,13 +55,15 @@ import view.recourses.quite.Quite;
  *         Bachiri Med
  */
 public class Router {
+    private static View main = new Entry();
 
     private static HashMap<String, View> routs = new HashMap<String, View>() {
         {
-            put("0/0/main", new view.entry.Entry());
-            put("1/0/client", new Index());
+            put("0/0/main", main);
+            put("1/0/clients", new Index());
             put("1/1/client_create", new view.recourses.client.Create());
             put("1/2/client_search", new Search());
+            put("1/3/main", main);
             put("2/0/projects", new Show());
             put("2/1/project_create", new view.recourses.project.Create());
             put("3/0/coute_project", new Calculate());
