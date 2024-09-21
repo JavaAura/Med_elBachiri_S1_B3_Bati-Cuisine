@@ -2,22 +2,16 @@ package model;
 
 public class Component {
     private String name;
-    private double unitCost;
-    private double quantity;
-    private String type;
+    private String componentType;
     private double TVARate;
 
-    public Component(String name, double unitCost, double quantity, String type, double TVARate){
+    public Component(String name, String componentType, double TVARate){
         this.name = name;
-        this.unitCost = unitCost;
-        this.quantity = quantity;
-        this.type = type;
+        this.componentType = componentType;
         this.TVARate = TVARate;
     }
 
     public String getName() { return name; }
-    public double getUnitCost() { return unitCost; }
-    public double getQuantity() { return quantity; }
-    public String getType() { return type; }
+    public String getComponentType() { return componentType; }
     public double getTVARate() { return TVARate; }
 }
