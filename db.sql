@@ -14,11 +14,12 @@ CREATE TABLE IF NOT EXISTS clients (
 
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(70) UNIQUE NOT NULL,
-    benefit_margin NUMERIC(11, 4) NOT NULL,
-    total_cost NUMERIC(20, 4) NOT NULL,
-    status status_enum NOT NULL,
-    client_id
+    name VARCHAR(70),
+    benefit_margin NUMERIC(11, 2),
+    total_cost NUMERIC(11, 2),
+    status status_enum,
+    kitchen_area_m2 NUMERIC(6,2)
+    client_id INT REFERENCES clients
 );
 
 CREATE TABLE IF NOT EXISTS components (
@@ -30,11 +31,9 @@ CREATE TABLE IF NOT EXISTS components (
     tva_rate NUMERIC NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS quotation (
-    estimated_amount NUMERIC(14, 4) NOT NULL,
-    issue_date DATE NOT NULL,
-    valid_until DATE NOT NULL,
-    is_accepted BOOLEAN DEFAULT FALSE
+CREATE TABLE IF NOT EXISTS materials (
+    transport_cost NUMERIC(20, 4),
+    coefficient_quality NUMERIC(11, 4)
 ) INHERITS (components);
 
 CREATE TABLE IF NOT EXISTS labors (
@@ -43,5 +42,12 @@ CREATE TABLE IF NOT EXISTS labors (
     worker_productivity NUMERIC(6,4) NOT NULL
 ) INHERITS (components);
 
+CREATE TABLE IF NOT EXISTS quotation (
+    id SERIAL PRIMARY KEY,
+    estimated_amount NUMERIC(14, 4) NOT NULL,
+    issue_date DATE NOT NULL,
+    valid_until DATE NOT NULL,
+    accepted BOOLEAN DEFAULT FALSE
+);
 
 
