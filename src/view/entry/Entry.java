@@ -7,7 +7,7 @@ import interfaces.View;
 public class Entry extends View {
     private Input input = new Input();
 
-    public void display() {
+    public void display(Object... params) {
         System.out.println("\t\t-Principal Menu-\t<0>\n");
         System.out.println("\t1. Create new project.");
         System.out.println("\t2. View all projects.");
