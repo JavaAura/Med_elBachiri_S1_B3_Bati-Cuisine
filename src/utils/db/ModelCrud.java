@@ -33,7 +33,7 @@ public class ModelCrud {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 List<Object> rowData = new ArrayList<>();
-                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                for (int i = 0; i <= rsmd.getColumnCount(); i++) {
                     rowData.add(rs.getObject(i));
                 }
                 data.put(id, rowData);
@@ -45,23 +45,26 @@ public class ModelCrud {
     }
 
     // Insert a new record into the table
-    public void create() {
-        String query = "INSERT INTO " + table + buildColumns() + " VALUES " + buildPlaceholders();
+    public Integer create() {
+        String query = "INSERT INTO " + table + buildColumns() + " VALUES " + buildPlaceholders() + "RETURNING id";
 
         try (PreparedStatement st = cn.prepareStatement(query)) {
             for (int i = 0; i < values.length; i++) {
                 st.setObject(i + 1, values[i]);
             }
 
-            int affectedRows = st.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("[+] Insert successful. Rows affected: " + affectedRows);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                System.out.println("[+] Insert successful. Rows affected: " + rs);
+                return rs.getInt(1);
             } else {
                 logger.warn("[-] Insert failed. No rows affected.");
+                return null;
             }
         } catch (SQLException e) {
             logger.error("[-] INSERTION FAILED: ", e);
         }
+        return null;
     }
 
     // get string of columns like (id, name, phone .... )
