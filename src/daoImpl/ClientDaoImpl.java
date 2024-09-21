@@ -11,6 +11,8 @@ import model.Client;
 public class ClientDaoImpl implements ClientDao {
     private ModelCrud Model = new ModelCrud(ModelCrud.Table.CLIENTS);
 
+    public ClientDaoImpl(){Model.setColumns("name", "address", "phone", "is_professional");}
+
     @Override
     public HashMap<String, Client> getAll() {
         HashMap<String, Client> clientsMap = new HashMap<>();
@@ -31,8 +33,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void create(Client client) {
-
+    public Integer create(Client client) {
+        Model.setValues(client.getName(), client.getAddress(), client.getPhone(), client.getIsProfessional());
+        return Model.create();
     }
 
     @Override
