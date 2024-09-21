@@ -17,7 +17,9 @@ public class ClientDaoImpl implements ClientDao {
         HashMap<Integer, List<Object>> fetchClients = Model.getAll();
 
         fetchClients.forEach((k, v) -> {
-            clientsMap.put(v.get(1).toString(), new Client(v.get(0).toString(), v.get(1).toString(), v.get(2).toString(), Boolean.parseBoolean(v.get(3).toString())));
+            Client cl = new Client(v.get(1).toString(), v.get(2).toString(), v.get(3).toString(), Boolean.parseBoolean(v.get(4).toString()));
+            cl.setId((int) v.get(0));
+            clientsMap.put(v.get(1).toString(),cl);
         });
 
         return clientsMap;
