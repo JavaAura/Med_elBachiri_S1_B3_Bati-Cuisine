@@ -6,17 +6,17 @@ public class Quotation {
     private double estimatedAmount;
     private Date issueDate;
     private Date validUntil;
-    private boolean isAccepted;
+    private boolean accepted;
 
-    public Quotation(double estimatedAmount, Date issueDate, Date validUntil, boolean isAccepted){
+    public Quotation(double estimatedAmount, Date issueDate, Date validUntil, boolean accepted){
         this.estimatedAmount = estimatedAmount;
         this.issueDate = issueDate;
         this.validUntil = validUntil;
-        this.isAccepted = isAccepted;
+        this.accepted = accepted;
     }
 
     public double getEstimatedAmount() { return estimatedAmount; }
     public Date getIssueDate() { return issueDate; }
     public Date getValidUntil() { return validUntil; }
-    public boolean getIsAccepted(){ return this.isAccepted; }
+    public boolean getIsAccepted(){ return this.accepted; }
 }
