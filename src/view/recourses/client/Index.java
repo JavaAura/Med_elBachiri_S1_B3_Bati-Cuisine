@@ -5,7 +5,7 @@ import utils.Input;
 import view.routing.Router;
 import interfaces.View;
 
-public class Index extends View {
+public class Index implements View {
     private Input input = new Input();
 
     public void display(Object... params) {
