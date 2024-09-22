@@ -4,7 +4,7 @@ import utils.Input;
 import view.routing.Router;
 import interfaces.View;
 
-public class Entry extends View {
+public class Entry implements View {
     private Input input = new Input();
 
     public void display(Object... params) {
