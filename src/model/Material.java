@@ -5,9 +5,10 @@ public class Material extends Component {
     private double quantity;
     private double transportCost;
     private double coefficientQuality;
+    private double materialCost;
 
-    public Material(String name, String componentType, double TVARate, double unitCost, double quantity, double transportCost, double coefficientQuality) {
-        super(name, componentType, TVARate);
+    public Material(String name, String componentType, double unitCost, double quantity, double transportCost, double coefficientQuality) {
+        super(name, componentType);
         this.unitCost = unitCost;
         this.quantity = quantity;
         this.transportCost = transportCost;
@@ -19,4 +20,15 @@ public class Material extends Component {
     public double getQuantity() { return quantity; }
     public double getTransportCost() { return transportCost; }
     public double getCoefficientQuality() { return coefficientQuality; }
+    public double getMaterialCost() { return materialCost; }
+
+    // setters
+
+    public void setMaterialCost(double materialCost) { this.materialCost = materialCost; }
+
+    public void display(){
+        System.out.println(
+                "- " + this.getName() + ": " + this.materialCost + " MAD (quantity: " + quantity + " m², unit cost: " + unitCost + " MAD/m², coefficient quality: " + coefficientQuality + ", transport cost: " + transportCost + ")"
+        );
+    }
 }
