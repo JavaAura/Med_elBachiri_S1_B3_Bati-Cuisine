@@ -1,7 +1,16 @@
 package dao;
 
-import java.util.ArrayList;
+import model.Labor;
+import model.Material;
+import model.Project;
+
+import java.util.HashMap;
+import java.util.List;
 
 public interface ProjectDao {
-    public ArrayList<ProjectDao> getAll();
+    public HashMap<String, Project> getAll();
+    public Project get(int id);
+    public Integer create(Project project);
+    public List<Material> getMaterials(int projectId);
+    public List<Labor> getLabors(int projectId);
 }
