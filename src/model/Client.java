@@ -31,7 +31,7 @@ public class Client {
     // display
     public void display(){
         System.out.println(
-                "ID: " + this.id + " | Name: " + this.name + " | Address: " + this.address + " | Phone: " + this.phone
+                "\n\tID: " + this.id + " | Name: " + this.name + " | Address: " + this.address + " | Phone: " + this.phone + "\n"
         );
     }
 }
