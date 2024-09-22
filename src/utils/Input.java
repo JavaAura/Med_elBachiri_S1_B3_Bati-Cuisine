@@ -69,7 +69,7 @@ public class Input {
 
     public boolean getYesNo(String message){
         while (true) {
-            System.out.println(message != "" ? (">>> " + message + " : ") : ">>> You want ? (y/n) : ");
+            System.out.println(message != "" ? (">>> " + message + " ? (y/n) : ") : ">>> You want ? (y/n) : ");
             String input = scan.nextLine();
             if (input.toLowerCase().matches("y||n")) return input.equalsIgnoreCase("y");
             else logger.error("[-] Input must be either \"y/Y\" or \"n/N\"\n");
@@ -82,5 +82,8 @@ public class Input {
             String input = scan.nextLine();
             if (input.replaceAll("[\\s\\-]", "").matches("\\+[0-9]{10,14}")) return input.replaceAll("[\\s\\-]", ""); else logger.error("[-] Input must be like +XXXXXXXXXX (10 to 14 numbers, note: can contain \" \" or \"-\").\n");
         }
+    }
+    public void cleanBuffer(){
+        scan.nextLine();
     }
 }
