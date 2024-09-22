@@ -9,22 +9,26 @@ import java.util.List;
 import model.Client;
 
 public class ClientDaoImpl implements ClientDao {
-    private ModelCrud Model = new ModelCrud(ModelCrud.Table.CLIENTS);
+    private final ModelCrud Model = new ModelCrud(ModelCrud.Table.CLIENTS);
+    private  HashMap<String, Client> nameClientsMap = new HashMap<>();
+//    private HashMap<Integer, Client> idClientMap = new HashMap<>();
+    private HashMap<Integer, List<Object>> fetchedClients = new HashMap<>();
 
-    public ClientDaoImpl(){Model.setColumns("name", "address", "phone", "is_professional");}
+    public ClientDaoImpl(){
+        Model.setColumns("name", "address", "phone", "is_professional");
+        if (fetchedClients.isEmpty()) fetchedClients = Model.getAll();
+    }
 
     @Override
     public HashMap<String, Client> getAll() {
-        HashMap<String, Client> clientsMap = new HashMap<>();
-        HashMap<Integer, List<Object>> fetchClients = Model.getAll();
-
-        fetchClients.forEach((k, v) -> {
+        if (fetchedClients.isEmpty()) return null;
+        fetchedClients.forEach((k, v) -> {
             Client cl = new Client(v.get(1).toString(), v.get(2).toString(), v.get(3).toString(), Boolean.parseBoolean(v.get(4).toString()));
             cl.setId((int) v.get(0));
-            clientsMap.put(v.get(1).toString(),cl);
+            nameClientsMap.put((String) v.get(1), cl);
+//            idClientMap.put((Integer) v.get(0), cl);
         });
-
-        return clientsMap;
+        return nameClientsMap;
     }
 
     @Override
