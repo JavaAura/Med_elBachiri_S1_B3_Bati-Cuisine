@@ -10,30 +10,45 @@ public class ModelCrud {
     private static final Logger logger = LoggerFactory.getLogger(ModelCrud.class);
     private final Connection cn = DbConnection.connect();
 
-    public enum Table { USERS, CLIENTS, PROJECTS, QUOTATIONS }
+    public enum Table { CLIENTS, PROJECTS, MATERIALS, LABORS, QUOTATIONS, PROJECT_COMPONENTS }
     private final Table table;
+    private boolean throughMsg = true;
+    private boolean activeWhere = false;
+    public void activateWhere(boolean activeWhere) { this.activeWhere = activeWhere; }
+    private String where;
+    private Object equalsTo;
+
+    public void where(String where) { this.where = where; }
+    public void equalsTo(Object equalsTo) { this.equalsTo = equalsTo; }
 
     private Object[] values;
     private Object[] columns;
+
+    public void setThroughMsg(boolean throughMsg) { this.throughMsg = throughMsg; }
 
     public void setValues(Object... values) { this.values = values; }
     public void setColumns(Object... columns) { this.columns = columns; }
 
     public ModelCrud(Table table) { this.table = table; }
 
+    private String singleName(String n) {return n.substring(0, (table.name().length() - 1));}
+
     // get all records of a table
     public HashMap<Integer, List<Object>> getAll() {
         HashMap<Integer, List<Object>> data = new HashMap<>();
         String query = "SELECT * FROM " + table;
 
-        try (Statement st = cn.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
+        if (activeWhere) query += " WHERE " + where + " = ?";
 
+        try {
+            PreparedStatement st = cn.prepareStatement(query);
+            if (activeWhere) st.setObject(1, equalsTo);
+            ResultSet rs = st.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
                 int id = rs.getInt("id");
                 List<Object> rowData = new ArrayList<>();
-                for (int i = 0; i <= rsmd.getColumnCount(); i++) {
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                     rowData.add(rs.getObject(i));
                 }
                 data.put(id, rowData);
@@ -43,6 +58,7 @@ public class ModelCrud {
         }
         return data;
     }
+
 
     // Insert a new record into the table
     public Integer create() {
@@ -55,17 +71,18 @@ public class ModelCrud {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                System.out.println("[+] Insert successful. Rows affected: " + rs);
+                if (throughMsg) System.out.println("[+] " + singleName(table.name()) + " added successfully.");
                 return rs.getInt(1);
             } else {
-                logger.warn("[-] Insert failed. No rows affected.");
+                if (throughMsg) logger.warn("[-] Failed adding " + singleName(table.name()) + ".");
                 return null;
             }
         } catch (SQLException e) {
-            logger.error("[-] INSERTION FAILED: ", e);
+            logger.error("[-] Failed adding " + singleName(table.name()) + ".", e);
         }
         return null;
     }
+
 
     // get string of columns like (id, name, phone .... )
     private String buildColumns() {
