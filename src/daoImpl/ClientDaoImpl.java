@@ -11,7 +11,7 @@ import model.Client;
 public class ClientDaoImpl implements ClientDao {
     private final ModelCrud Model = new ModelCrud(ModelCrud.Table.CLIENTS);
     private  HashMap<String, Client> nameClientsMap = new HashMap<>();
-//    private HashMap<Integer, Client> idClientMap = new HashMap<>();
+    private HashMap<Integer, Client> idClientMap = new HashMap<>();
     private HashMap<Integer, List<Object>> fetchedClients = new HashMap<>();
 
     public ClientDaoImpl(){
@@ -26,7 +26,7 @@ public class ClientDaoImpl implements ClientDao {
             Client cl = new Client(v.get(1).toString(), v.get(2).toString(), v.get(3).toString(), Boolean.parseBoolean(v.get(4).toString()));
             cl.setId((int) v.get(0));
             nameClientsMap.put((String) v.get(1), cl);
-//            idClientMap.put((Integer) v.get(0), cl);
+            idClientMap.put((Integer) v.get(0), cl);
         });
         return nameClientsMap;
     }
@@ -42,13 +42,4 @@ public class ClientDaoImpl implements ClientDao {
         return Model.create();
     }
 
-    @Override
-    public void update(Client client) {
-
-    }
-
-    @Override
-    public void delete(int id) {
-
-    }
 }
