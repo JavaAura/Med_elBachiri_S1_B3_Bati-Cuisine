@@ -1,5 +1,6 @@
 package dao;
 
+import model.Client;
 import model.Labor;
 import model.Material;
 import model.Project;
@@ -13,4 +14,7 @@ public interface ProjectDao {
     public Integer create(Project project);
     public List<Material> getMaterials(int projectId);
     public List<Labor> getLabors(int projectId);
+    public boolean setTva(int projectId, double tva);
+    public boolean setBenefitMargin(int projectId, double benefitMargin);
+    public HashMap<String, Object> projectNClient(int projectId);
 }
