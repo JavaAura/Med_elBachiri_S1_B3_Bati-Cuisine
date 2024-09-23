@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class LaborDaoImpl implements ComponentDao<Labor> {
     private final ModelCrud model = new ModelCrud(ModelCrud.Table.LABORS);
 
-    public LaborDaoImpl(){model.setColumns("name", "component_type", "project_id", "hourly_rate", "hours_worked", "worker_productivity");}
+    public LaborDaoImpl(){model.setColumns("name", "component_type", "project_id", "hourly_rate", "hours_worked", "worker_productivity", "labor_cost");}
 
     @Override
     public HashMap<String, Labor> getAll() {
@@ -23,7 +23,7 @@ public class LaborDaoImpl implements ComponentDao<Labor> {
 
     @Override
     public Integer create(Labor l) {
-        model.setValues(l.getName(), l.getComponentType(), l.getProjectId(), l.getHourlyRate(), l.getHoursWorked(), l.getWorkerProductivity());
+        model.setValues(l.getName(), l.getComponentType(), l.getProjectId(), l.getHourlyRate(), l.getHoursWorked(), l.getWorkerProductivity(), l.getLaborCost());
         return model.create();
     }
 
