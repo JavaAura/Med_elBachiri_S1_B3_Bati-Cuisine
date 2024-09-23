@@ -16,20 +16,21 @@ public class CalculateCost implements View{
 
     public void display(Object... params){
         int projectId = (Integer) params[0];
+        int clientId = (int) params[1];
 
         System.out.println("\t\t-Calculate Project Cost-\n\n");
         if(input.getYesNo("Do you want to apply VAT to the project")) {
-            tva = input.getDouble("Enter the TVA percentage (%) ");
+            tva = input.getDouble("Enter the TVA percentage (%)");
             input.cleanBuffer();
-            
+            service.setTva(projectId, tva);
         }
         if(input.getYesNo("Do you want to apply a profit margin to the project")){
-
+            benefitMargin = input.getDouble("Enter the profit margin percentage (%) ");
             input.cleanBuffer();
+            service.setBenefitMargin(projectId, benefitMargin);
         }
-        MaterialService.get(1);
 
-        Router.get("project_details").display();
+        Router.get("project_details").display(projectId);
     }
 
 
