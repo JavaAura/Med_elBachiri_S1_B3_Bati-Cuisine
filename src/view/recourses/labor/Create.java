@@ -4,6 +4,7 @@ import interfaces.View;
 import model.Labor;
 import service.LaborService;
 import utils.Input;
+import utils.calculations.Calculate;
 
 public class Create implements View {
     private Input input = new Input();
@@ -26,6 +27,8 @@ public class Create implements View {
         double hoursWorked = input.getDouble("Enter the number of hours worked");
         double workerProductivity = input.getDouble("Enter the productivity factor (1.0 = standard, > 1.0 = high productivity)");
         input.cleanBuffer();
-        return new Labor(name, "labor", hourlyRate, hoursWorked, workerProductivity);
+        Labor labor = new Labor(name, "labor", hourlyRate, hoursWorked, workerProductivity);
+        labor.setLaborCost(Calculate.laborCost(hourlyRate, hoursWorked, workerProductivity));
+        return labor;
     }
 }
