@@ -23,7 +23,7 @@ public class Labor extends Component {
 
     public void display(){
         System.out.println(
-                "- " + this.getName() + ": " + this.laborCost + " MAD (hourly rate: " + hourlyRate + " MAD/h, worked hours: " + hoursWorked + " h, productivity: " + workerProductivity  + ")"
+                "\t\t- " + this.getName() + ": " + this.laborCost + " MAD (hourly rate: " + hourlyRate + " MAD/h, worked hours: " + hoursWorked + " h, productivity: " + workerProductivity  + ")"
         );
     }
 }
