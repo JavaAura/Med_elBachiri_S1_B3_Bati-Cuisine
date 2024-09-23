@@ -15,10 +15,10 @@ public class Create implements View {
         Project p = getProject();
         p.setClientId(clientId);
         Integer projectId = ProjectService.create(p);
-        System.out.println(projectId);
+
         Router.get("material_create").display(projectId);
         Router.get("labor_create").display(projectId);
-        Router.get("project_calculate_cost").display(projectId);
+        Router.get("project_calculate_cost").display(projectId, clientId);
     }
 
     private Project getProject() {
