@@ -28,7 +28,7 @@ public class Material extends Component {
 
     public void display(){
         System.out.println(
-                "- " + this.getName() + ": " + this.materialCost + " MAD (quantity: " + quantity + " m², unit cost: " + unitCost + " MAD/m², coefficient quality: " + coefficientQuality + ", transport cost: " + transportCost + ")"
+                "\t\t- " + this.getName() + ": " + this.materialCost + " MAD (quantity: " + quantity + " m², unit cost: " + unitCost + " MAD/m², coefficient quality: " + coefficientQuality + ", transport cost: " + transportCost + "MAD)"
         );
     }
 }
