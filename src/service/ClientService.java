@@ -15,6 +15,7 @@ public class ClientService {
     public Client searchByName(String name){
         return clients.get(name);
     }
+
     public static Integer create(Client client){
         return clientDao.create(client);
     }
