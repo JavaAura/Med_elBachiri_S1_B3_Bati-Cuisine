@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS components (
     name VARCHAR(70) UNIQUE NOT NULL,
     component_type VARCHAR(40) NOT NULL,
     tva_rate NUMERIC(4,2),
-    project_id INT REFERENCES projects(id)
+    project_id INT REFERENCES projects(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS materials (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS quotations (
     issue_date DATE NOT NULL,
     valid_until DATE NOT NULL,
     accepted BOOLEAN DEFAULT FALSE,
-    project_id INT REFERENCES projects(id)
+    project_id INT REFERENCES projects(id) ON DELETE CASCADE
 );
 
 
