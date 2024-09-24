@@ -53,8 +53,6 @@ import view.recourses.quotation.Save;
  * </blockquote>
  * <p>
  *
- * @author
- *         Bachiri Med
  */
 public class Router {
     private static final View entry = new Entry();
