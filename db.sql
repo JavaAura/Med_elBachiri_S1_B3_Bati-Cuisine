@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS projects (
     name VARCHAR(70),
     benefit_margin NUMERIC(11, 2),
     total_cost NUMERIC(11, 2),
-    status status_enum,
+    status status_enum DEFAULT IN_PROGRESS,
     kitchen_area_m2 NUMERIC(6,2),
     client_id INT REFERENCES clients
 );
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS components (
     id SERIAL PRIMARY KEY,
     name VARCHAR(70) UNIQUE NOT NULL,
     component_type VARCHAR(40) NOT NULL,
-    tva_rate NUMERIC,
+    tva_rate NUMERIC(4,2),
     project_id INT REFERENCES projects(id)
 );
 
@@ -45,12 +45,13 @@ CREATE TABLE IF NOT EXISTS labors (
     labor_cost NUMERIC(20, 2) NOT NULL
 ) INHERITS (components);
 
-CREATE TABLE IF NOT EXISTS quotation (
+CREATE TABLE IF NOT EXISTS quotations (
     id SERIAL PRIMARY KEY,
     estimated_amount NUMERIC(14,2),
     issue_date DATE NOT NULL,
     valid_until DATE NOT NULL,
-    accepted BOOLEAN DEFAULT FALSE
+    accepted BOOLEAN DEFAULT FALSE,
+    project_id INT REFERENCES projects(id)
 );
 
 
