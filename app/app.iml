@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/postgresql-42.7.4.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/slf4j-api-2.0.16-javadoc.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,11 +19,10 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/slf4j-api-2.0.16-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/postgresql-42.7.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="jar://$USER_HOME$/Downloads/slf4j-api-2.0.16-javadoc.jar!/" recursive="false" />
       </library>
     </orderEntry>
   </component>
