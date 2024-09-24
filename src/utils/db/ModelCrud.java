@@ -114,8 +114,24 @@ public class ModelCrud {
     }
 
     public boolean delete(){
-        query = "DELETE";
-        return false;
+        String q = "DELETE FROM " + table + " WHERE " + where + " = ?";
+        try {
+            PreparedStatement st = cn.prepareStatement(q);
+            st.setObject(1, equalsTo);
+
+            int row = st.executeUpdate();
+            System.out.println(row);
+            if (row > 0){
+                if (throughMsg) System.out.println("[+] " + singleName(table.name()) + "'s deleted successfully.");
+                return true;
+            } else {
+                if (throughMsg) logger.warn("[-] Failed deleting " + singleName(table.name()) + ".");
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.error("SQL ERROR: ", e);
+            return false;
+        }
     }
 
     // get string of columns like (id, name, phone .... )
