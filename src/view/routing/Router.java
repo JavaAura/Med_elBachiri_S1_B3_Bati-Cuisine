@@ -7,11 +7,11 @@ import interfaces.View;
 import view.entry.Entry;
 import view.recourses.client.Index;
 import view.recourses.client.Search;
-import view.recourses.material.All;
 import view.recourses.material.Create;
-import view.recourses.project.CalculateCost;
-import view.recourses.project.Details;
+import view.recourses.project.*;
 import view.recourses.quite.Quite;
+import view.recourses.quotation.Accept;
+import view.recourses.quotation.Save;
 
 /**
  * {@code Router} Class is for displaying View Classes by a Name or ID that is
@@ -66,12 +66,16 @@ public class Router {
             put("1/1/client_create", new view.recourses.client.Create());
             put("1/2/client_search", new Search());
             put("1/3/back_to_entry", entry);
-            put("2/0/projects", new Details());
-            put("2/1/project_create", new view.recourses.project.Create());
-            put("2/2/material_create", new Create());
-            put("2/3/labor_create", new view.recourses.labor.Create());
+            put("2/0/projects", new All());
+            put("2/1/update_project", new Update());
+            put("2/2/accept_quotation", new Accept());
+            put("2/3/delete_project", new Delete());
+            put("2/x/project_create", new view.recourses.project.Create());
+            put("2/x/material_create", new Create());
+            put("2/x/labor_create", new view.recourses.labor.Create());
             put("3/0/project_calculate_cost", new CalculateCost());
             put("3/1/project_details", new Details());
+            put("3/2/project_save_quotation", new Save());
             put("4/0/quite", new Quite());
         }
     };
@@ -89,7 +93,7 @@ public class Router {
             return routs.get(findView.get());
         } else {
             System.out.println("\n[-] View not found for: " + viewName + "\n\n");
-            return routs.get("0/0/main");
+            return routs.get("0/0/entry");
         }
     }
 
@@ -100,7 +104,7 @@ public class Router {
      * @return The view instance.
      */
     public static View get(int viewId) {
-        return get(String.valueOf(viewId) + "/0/");
+        return get(strOf(viewId) + "/0/");
     }
 
     /**
@@ -111,6 +115,10 @@ public class Router {
      * @return The view instance.
      */
     public static View get(int parentViewId, int subViewId) {
-        return get(String.valueOf(parentViewId) + "/" + String.valueOf(subViewId) + "/");
+        return get(strOf(parentViewId) + "/" + strOf(subViewId) + "/");
+    }
+
+    private static String strOf(int i){
+        return String.valueOf(i);
     }
 }
