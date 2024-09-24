@@ -84,10 +84,15 @@ public class ProjectService {
     }
 
     public void delete(int projectId){
-        projectDao.delete(projectId);
+        boolean deleted = projectDao.delete(projectId);
+        System.out.println(deleted? "[+] Project deleted.\n" : "[-] Failed deleting project.\n");
     }
     public void update(Project p){
         boolean updated = projectDao.update(p);
         System.out.println(updated ? "[+] Project updated successfully.\n" : "[-] Project not found.\n");
+    }
+    public boolean get(int projectId){
+        Project p = projectDao.get(projectId);
+        return p != null;
     }
 }
