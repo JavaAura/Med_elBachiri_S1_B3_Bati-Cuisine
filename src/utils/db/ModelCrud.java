@@ -113,6 +113,11 @@ public class ModelCrud {
         }
     }
 
+    public boolean delete(){
+        query = "DELETE";
+        return false;
+    }
+
     // get string of columns like (id, name, phone .... )
     private String buildColumns() {
         return " (" + String.join(", ", Arrays.stream(columns).map(Object::toString).toArray(String[]::new)) + ") ";
