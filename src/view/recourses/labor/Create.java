@@ -23,7 +23,7 @@ public class Create implements View {
     }
     public Labor getLabor(){
         String name = input.getStr("Enter the type of workforce (e.g., Basic Worker, Specialist)");
-        double hourlyRate = input.getDouble("Enter the hourly rate for this workforce (€ / h)");
+        double hourlyRate = input.getDouble("Enter the hourly rate for this workforce (MAD / h)");
         double hoursWorked = input.getDouble("Enter the number of hours worked");
         double workerProductivity = input.getDouble("Enter the productivity factor (1.0 = standard, > 1.0 = high productivity)");
         input.cleanBuffer();
