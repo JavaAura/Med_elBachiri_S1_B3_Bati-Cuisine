@@ -24,8 +24,8 @@ public class Create implements View {
     public Material getMaterial(){
         String name = input.getStr("Enter the name of the material");
         double quantity = input.getDouble("Enter the quantity of this material (in m²)");
-        double unitCost = input.getDouble("Enter the unit cost of this material (€/m²)");
-        double transportCost = input.getDouble("Enter the transportation cost of this material (€)");
+        double unitCost = input.getDouble("Enter the unit cost of this material (MAD/m²)");
+        double transportCost = input.getDouble("Enter the transportation cost of this material (MAD)");
         double coefficientQuality = input.getDouble("Enter the material quality coefficient (1.0 = standard, > 1.0 = high quality)");
         input.cleanBuffer(); // clear buffer
         Material material = new Material(name, "material", unitCost, quantity, transportCost, coefficientQuality);
