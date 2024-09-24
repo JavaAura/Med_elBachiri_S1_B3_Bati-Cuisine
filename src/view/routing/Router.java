@@ -65,17 +65,20 @@ public class Router {
             put("1/0/clients", new Index());
             put("1/1/client_create", new view.recourses.client.Create());
             put("1/2/client_search", new Search());
-            put("1/3/back_to_entry", entry);
+            put("1/3/display_clients", new view.recourses.client.All());
+            put("1/4/back_to_entry", entry);
             put("2/0/projects", new All());
             put("2/1/update_project", new Update());
             put("2/2/accept_quotation", new Accept());
             put("2/3/delete_project", new Delete());
+            put("2/4/back_home", entry);
             put("2/x/project_create", new view.recourses.project.Create());
             put("2/x/material_create", new Create());
             put("2/x/labor_create", new view.recourses.labor.Create());
             put("3/0/project_calculate_cost", new CalculateCost());
             put("3/1/project_details", new Details());
-            put("3/2/project_save_quotation", new Save());
+            put("3/2/project_before_quotation", new BeforeQuotation());
+            put("3/3/project_save_quotation", new Save());
             put("4/0/quite", new Quite());
         }
     };
