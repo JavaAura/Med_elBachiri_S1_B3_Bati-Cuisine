@@ -10,16 +10,14 @@ public class CalculateCost implements View{
     private Input input = new Input();
     private ProjectService service = new ProjectService();
 
-
     private Double tva = null;
     private Double benefitMargin = null;
 
     public void display(Object... params){
         int projectId = (Integer) params[0];
-        int clientId = (int) params[1];
 
         System.out.println("\t\t-Calculate Project Cost-\n\n");
-        if(input.getYesNo("Do you want to apply VAT to the project")) {
+        if(input.getYesNo("Do you want to apply TVA to the project")) {
             tva = input.getDouble("Enter the TVA percentage (%)");
             input.cleanBuffer();
             service.setTva(projectId, tva);
@@ -30,7 +28,7 @@ public class CalculateCost implements View{
             service.setBenefitMargin(projectId, benefitMargin);
         }
 
-        Router.get("project_details").display(projectId);
+        Router.get("project_details").display(projectId, true);
     }
 
 
