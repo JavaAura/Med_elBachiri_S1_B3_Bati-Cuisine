@@ -5,11 +5,14 @@ import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import jdk.nashorn.internal.runtime.options.LoggingOption;
+import model.Project;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -51,16 +54,19 @@ public class Input {
             if (input.replaceAll(" ", "").matches("[\\w&&[^_]]+")) return input; else logger.error("[-] Inpute must contain only letters and numbers.\n");
         }
     }
-    public LocalDate getLocalDate(String message, boolean canBeAboveNow){
+    public LocalDate getLocalDate(String message, boolean mustBeAboveNow){
         DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate now = LocalDate.now();
         while (true) {
             try{
-                System.out.println(message != "" ? (">>> " + message + ":") : ">>> Enter date (DD/MM/YYYY):");
+                System.out.println(message != "" ? (">>> " + message + " (format: DD/MM/YYYY):") : ">>> Enter date (format: DD/MM/YYYY):");
                 String input = scan.nextLine();
                 LocalDate inputDate = LocalDate.parse(input, form);
-                if (canBeAboveNow) return inputDate;
-                if (!canBeAboveNow && inputDate.isBefore(now)) return inputDate; else logger.error("[-] Please enter a date that is before " + now + "\n");
+
+                if (mustBeAboveNow && inputDate.isAfter(now)){ return inputDate; }
+                else if (!mustBeAboveNow && inputDate.isBefore(now)){ return inputDate; }
+                else { logger.error("[-] Please enter a date that is before " + now + "\n"); }
+
             } catch (DateTimeParseException e){
                 logger.error("[-] Invalid date, please enter a date in this format (DD/MM/YYYY)\n");
             }
@@ -81,6 +87,16 @@ public class Input {
             System.out.println(message != "" ? (">>> " + message + ":") : ">>> Enter phone number (+212700000000) : ");
             String input = scan.nextLine();
             if (input.replaceAll("[\\s\\-]", "").matches("\\+[0-9]{10,14}")) return input.replaceAll("[\\s\\-]", ""); else logger.error("[-] Input must be like +XXXXXXXXXX (10 to 14 numbers, note: can contain \" \" or \"-\").\n");
+        }
+    }
+    public Project.Status getProjectStatus(String message){
+        Project.Status[] status = new Project.Status[]{Project.Status.IN_PROGRESS, Project.Status.DONE, Project.Status.CANCELED};
+        while (true){
+            String input = getStr(message).toUpperCase();
+            Optional<Project.Status> matchedStatus = Arrays.stream(status).filter(s -> s.name().matches(input)).findFirst();
+            if (matchedStatus.isPresent()){
+                return matchedStatus.get();
+            } else logger.warn("[-] Choice must be one of the following (IN_PROGRESS, DONE, CANCELED),\n Note: case ignored.");
         }
     }
     public void cleanBuffer(){
