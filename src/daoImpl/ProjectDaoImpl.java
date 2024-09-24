@@ -35,14 +35,10 @@ public class ProjectDaoImpl implements ProjectDao {
         List<Object> obj = result.get(id);
 
         if (obj == null || obj.isEmpty()) {
-            return null; // Handle the case where no result is found
+            return null;
         }
 
-        Project project = new Project((String) obj.get(1), (double) obj.get(5));
-        project.setBenefitMargin((double) obj.get(2));
-        project.setTotalCost((double) obj.get(3));
-        project.setClientId((int) obj.get(6));
-
+        Project project = new Project((String) obj.get(1), ((BigDecimal) obj.get(5)).doubleValue());
         return project;
     }
 
@@ -166,7 +162,11 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public boolean delete(int projectId){
-        return false;
+        model.setTable(ModelCrud.Table.PROJECTS);
+        model.setThroughMsg(false);
+        model.activateWhere(true);
+        model.where("id"); model.equalsTo(projectId);
+        return model.delete();
     }
 
     @Override
