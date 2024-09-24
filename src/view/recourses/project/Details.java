@@ -9,10 +9,15 @@ import java.util.HashMap;
 public class Details implements View {
     private ProjectService service = new ProjectService();
     private Double benefitMargin;
-    private Double tva;
+//    private Double tva;
 
     public void display(Object... params) {
         int projectId = (int) params[0];
+        if (!service.get(projectId)) {
+            System.out.println("\n[-] Project not found.");
+            Router.get("entry").display();
+            return;
+        };
         boolean saveQuotation = (boolean) params[1];
 
         benefitMargin = service.getProjectClient(projectId);
