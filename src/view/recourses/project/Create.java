@@ -18,7 +18,7 @@ public class Create implements View {
 
         Router.get("material_create").display(projectId);
         Router.get("labor_create").display(projectId);
-        Router.get("project_calculate_cost").display(projectId, clientId);
+        Router.get("project_calculate_cost").display(projectId);
     }
 
     private Project getProject() {
