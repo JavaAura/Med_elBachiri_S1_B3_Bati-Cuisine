@@ -19,6 +19,7 @@ public class All implements View {
             System.out.println("\t1. Update project.");
             System.out.println("\t2. Accept a quotation");
             System.out.println("\t3. Delete project.");
+            System.out.println("\t4. Back home.");
             Router.get(2, input.getNum("Enter your choice")).display();
         }
     }
