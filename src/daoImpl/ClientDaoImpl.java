@@ -32,11 +32,6 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client get(int id) {
-        return null;
-    }
-
-    @Override
     public Integer create(Client client) {
         Model.setValues(client.getName(), client.getAddress(), client.getPhone(), client.getIsProfessional());
         return Model.create();
