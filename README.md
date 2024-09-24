@@ -133,6 +133,9 @@ This project aims to provide professionals with a powerful and practical tool fo
     java -jar artifacts/Bati_Cuisine_jar/Bati_Cuisine.jar
 ```
 
+### JIRA backlog
+https://mohammedelbachiri945.atlassian.net/jira/software/projects/BC/boards/1
+
 #### Note: No authentication/authorization handling is required for this application.
 
 ---
