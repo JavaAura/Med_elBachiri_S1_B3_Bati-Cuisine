@@ -33,26 +33,23 @@ public class ModelCrud {
     public ModelCrud(Table table) { this.table = table; }
     public void setTable(Table t) {this.table = t;}
     private String singleName(String n) {return n.substring(0, (table.name().length() - 1));}
+    private boolean isStatus = false;
 
-    private String join = null;
-    private String on = null;
+    public void setIsStatus(boolean status) { isStatus = status; }
 
-    public void join(String with) { this.join = with; }
-
-    public void on(String on) { this.on = on; }
+    private String query = null;
+    public void setQuery(String query) { this.query = query; }
 
     // get all records of a table
     public HashMap<Integer, List<Object>> getAll() {
         HashMap<Integer, List<Object>> data = new HashMap<>();
-        String query = "SELECT * FROM " + table;
+        String q = "SELECT * FROM " + table;
 
-        if(join != null && on != null) {
-            query += " JOIN " + join + " ON " + on;
-        }
-        if (activeWhere) query += " WHERE " + where + " = ?";
+        if (activeWhere) q += " WHERE " + where + " = ?";
 
+        if(this.query != null) { q = this.query;}
         try {
-            PreparedStatement st = cn.prepareStatement(query);
+            PreparedStatement st = cn.prepareStatement(q);
             if (activeWhere) st.setObject(1, equalsTo);
             ResultSet rs = st.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -79,7 +76,6 @@ public class ModelCrud {
             for (int i = 0; i < values.length; i++) {
                 st.setObject(i + 1, values[i]);
             }
-
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 if (throughMsg) System.out.println("[+] " + singleName(table.name()) + " added successfully.");
@@ -97,7 +93,7 @@ public class ModelCrud {
     // update table
     public boolean update(){
         activateWhere(true);
-        String query = "UPDATE " + table + " SET " + buildSetColumns() + " WHERE " + where + " = ?";
+        String query = "UPDATE " + table + " SET " + buildSetColumns(isStatus ? "::status_enum" : "") + " WHERE " + where + " = ?";
         try (PreparedStatement st = cn.prepareStatement(query)) {
             for (int i = 0; i < values.length; i++) {
                 st.setObject(i + 1, values[i]);
@@ -126,7 +122,7 @@ public class ModelCrud {
         return " (" + String.join(", ", Collections.nCopies(values.length, "?")) + ") ";
     }
     // ex of columns (id, name, email): "id = ?, name = ?, email = ?"
-    private String buildSetColumns(){
-        return String.join(" = ?, ", Arrays.stream(columns).map(Object::toString).toArray(String[]::new)) + " = ?";
+    private String buildSetColumns(String... s){
+        return String.join(" = ?, ", Arrays.stream(columns).map(Object::toString).toArray(String[]::new)) + " = ?" + s[0];
     }
 }
