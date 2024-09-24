@@ -15,23 +15,34 @@ import java.util.List;
 public class ProjectDaoImpl implements ProjectDao {
     private final ModelCrud model = new ModelCrud(ModelCrud.Table.PROJECTS);
 
-    public ProjectDaoImpl(){model.setColumns("name", "kitchen_area_m2", "client_id");}
+    public ProjectDaoImpl() {
+        model.setColumns("name", "kitchen_area_m2", "client_id");
+    }
 
     @Override
     public HashMap<String, Project> getAll() {
+        // Implement the logic for retrieving all projects
         return null;
     }
 
     @Override
     public Project get(int id) {
-        HashMap<Integer, List<Object>> p = new HashMap<>();
-        model.activateWhere(true); model.where("id"); model.equalsTo(id);
-        p = model.getAll();
-        List<Object> obj = p.get(id);
+        model.activateWhere(true);
+        model.where("id");
+        model.equalsTo(id);
+
+        HashMap<Integer, List<Object>> result = model.getAll();
+        List<Object> obj = result.get(id);
+
+        if (obj == null || obj.isEmpty()) {
+            return null; // Handle the case where no result is found
+        }
+
         Project project = new Project((String) obj.get(1), (double) obj.get(5));
         project.setBenefitMargin((double) obj.get(2));
         project.setTotalCost((double) obj.get(3));
         project.setClientId((int) obj.get(6));
+
         return project;
     }
 
@@ -43,88 +54,130 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public List<Material> getMaterials(int projectId) {
+        model.setQuery(null);
         model.setTable(ModelCrud.Table.MATERIALS);
-        List<Material> materials = new ArrayList<>();
         model.activateWhere(true);
         model.where("project_id");
         model.equalsTo(projectId);
+
+        List<Material> materials = new ArrayList<>();
         model.getAll().forEach((k, v) -> {
             Material material = new Material(
-                    (String) v.get(1),
-                    (String) v.get(2),
+                    v.get(1).toString(),
+                    v.get(2).toString(),
                     ((BigDecimal) v.get(5)).doubleValue(),
                     ((BigDecimal) v.get(6)).doubleValue(),
                     ((BigDecimal) v.get(7)).doubleValue(),
                     ((BigDecimal) v.get(8)).doubleValue()
             );
             material.setMaterialCost(((BigDecimal) v.get(9)).doubleValue());
-            material.setTVARate(((BigDecimal) v.get(3)).doubleValue());
+            BigDecimal tvaRateValue = (BigDecimal) v.get(3);
+            if (tvaRateValue != null){
+                material.setTVARate(((BigDecimal) v.get(3)).doubleValue());
+            }
             material.setProjectId((int) v.get(0));
             materials.add(material);
-
         });
+
         return materials;
     }
 
     @Override
-    public List<Labor> getLabors(int projectId){
+    public List<Labor> getLabors(int projectId) {
+        model.setQuery(null);
         model.setTable(ModelCrud.Table.LABORS);
-        List<Labor> labors = new ArrayList<>();
         model.activateWhere(true);
         model.where("project_id");
         model.equalsTo(projectId);
+
+        List<Labor> labors = new ArrayList<>();
         model.getAll().forEach((k, v) -> {
             Labor labor = new Labor(
                     (String) v.get(1),
                     (String) v.get(2),
-                    ((BigDecimal) v.get(5)).doubleValue(), // up to tables column order
+                    ((BigDecimal) v.get(5)).doubleValue(),
                     ((BigDecimal) v.get(6)).doubleValue(),
                     ((BigDecimal) v.get(7)).doubleValue()
             );
             labor.setLaborCost(((BigDecimal) v.get(8)).doubleValue());
-            labor.setTVARate(((BigDecimal) v.get(3)).doubleValue());
+            BigDecimal tvaRateValue = (BigDecimal) v.get(3);
+            if (tvaRateValue != null){
+                labor.setTVARate(((BigDecimal) v.get(3)).doubleValue());
+            }
             labor.setProjectId((int) v.get(0));
             labors.add(labor);
         });
 
         return labors;
     }
+
     @Override
-    public boolean setTva(int projectId, double tva){
+    public boolean setTva(int projectId, double tva) {
         model.setTable(ModelCrud.Table.COMPONENTS);
         model.setColumns("tva_rate");
-        model.where("project_id"); model.equalsTo(projectId);
+        model.where("project_id");
+        model.equalsTo(projectId);
         model.setValues(tva);
         model.setThroughMsg(false);
         return model.update();
     }
 
     @Override
-    public boolean setBenefitMargin(int projectId, double benefitMargin){
+    public boolean setBenefitMargin(int projectId, double benefitMargin) {
         model.setTable(ModelCrud.Table.PROJECTS);
         model.setColumns("benefit_margin");
-        model.where("id"); model.equalsTo(projectId);
+        model.where("id");
+        model.equalsTo(projectId);
         model.setValues(benefitMargin);
         model.setThroughMsg(false);
         return model.update();
     }
 
     @Override
-    public HashMap<String, Object> projectNClient(int projectId){
+    public HashMap<String, Object> projectNClient(int projectId) {
+        model.activateWhere(true);
+        model.setQuery(
+                "SELECT p.id, p.name, p.benefit_margin, p.total_cost, p.status, p.kitchen_area_m2, c.name, c.address, c.phone, c.is_professional " +
+                        "FROM projects p " +
+                        "JOIN clients c ON c.id = p.client_id " +
+                        "WHERE p.id = ?"
+        );
+        model.equalsTo(projectId);
+
         HashMap<String, Object> pnc = new HashMap<>();
-        model.activateWhere(true); model.join("clients"); model.on("clients.id = projects.client_id");
-        model.where("projects.id"); model.equalsTo(projectId);
-        List<Object> c =  model.getAll().get(projectId);
+        List<Object> c = model.getAll().get(projectId);
+
+        if (c == null || c.isEmpty()) {
+            return pnc;
+        }
 
         pnc.put("project_name", c.get(1));
         pnc.put("benefit_margin", c.get(2));
         pnc.put("total_cost", c.get(3));
         pnc.put("status", c.get(4));
-        pnc.put("kitchen_area", c.get(5));
-        pnc.put("name", c.get(8));
-        pnc.put("address", c.get(9));
-        pnc.put("phone", c.get(10));
-        pnc.put("is_professional", c.get(11));
+        pnc.put("kitchen_area_m2", c.get(5));
+        pnc.put("name", c.get(6));
+        pnc.put("address", c.get(7));
+        pnc.put("phone", c.get(8));
+        pnc.put("is_professional", c.get(9));
+
         return pnc;
     }
+
+    @Override
+    public boolean delete(int projectId){
+        return false;
+    }
+
+    @Override
+    public boolean update(Project p){
+        model.activateWhere(true);
+        model.setColumns("name", "kitchen_area_m2", "status");
+        model.setValues(p.getName(), p.getKitchenAreaM2(), p.getStatus().name());
+        model.where("id"); model.equalsTo(p.getId());
+        model.setThroughMsg(false);
+        model.setIsStatus(true);
+        return model.update();
+    }
+
 }
