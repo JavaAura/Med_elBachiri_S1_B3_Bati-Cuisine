@@ -12,6 +12,11 @@ public class ClientService {
     public ClientService(){
         clients = clientDao.getAll();
     }
+
+    public void displayClients(){
+        clients.forEach((k, v) -> v.display());
+    }
+
     public Client searchByName(String name){
         return clients.get(name);
     }
